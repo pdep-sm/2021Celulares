@@ -1,0 +1,71 @@
+import celulares.*
+
+describe "Pruebas de celulares" {
+
+	test "Al cargar el Samsung S21, la batería queda en 5" {
+		samsungS21.cargar()
+		assert.equals(5, samsungS21.bateria())
+	}
+	
+	test "Al cargar el iPhone, la batería queda en 5" {
+		iPhone.cargar()
+		assert.equals(5, iPhone.bateria())
+	}
+	
+	test "Al llamar durante 5 minutos, la batería del Samsung S21 baja 0.25" {
+		samsungS21.llamarDurante(5)
+		assert.equals(2.75, samsungS21.bateria())
+	}
+	
+	test "Al llamar durante 5 minutos, la batería del iPhone baja 0.5" {
+		iPhone.llamarDurante(500)
+		assert.equals(1.5, iPhone.bateria())
+	}
+	
+	test "El Samsung S21 con batería en 0 está apagado" {
+		samsungS21.bateria(0)
+		assert.that(samsungS21.estaApagado())
+	}
+	
+	test "El iPhone con batería en 0 está apagado" {
+		iPhone.bateria(0)
+		assert.that(iPhone.estaApagado())
+	}
+	
+	test "El Samsung S21 que gasta toda su batería está apagado" {
+		samsungS21.bateria(0.1)
+		samsungS21.llamarDurante(5)
+		assert.that(samsungS21.estaApagado())
+	}
+	
+	test "El iPhone que gasta toda su batería está apagado" {
+		iPhone.bateria(0.2)
+		iPhone.llamarDurante(500)
+		assert.that(iPhone.estaApagado())
+	}
+}
+
+describe "Pruebas de llamadas" {
+
+	test "Juliana llama a Catalina por 500 minutos, el Samsung S21 pierde 0.25 de batería" {
+		iPhone.bateria(3.25)
+		juliana.llamarA(catalina, 500)
+		assert.equals(2.75, samsungS21.bateria())
+	}
+	
+	test "Juliana llama a Catalina por 500 minutos, el iPhone pierde 0.5 de batería" {
+		iPhone.bateria(3.25)
+		juliana.llamarA(catalina, 500)
+		assert.equals(2.75, iPhone.bateria())
+	}	
+	
+	test "Catalina llama a Juliana por 1 minuto, el Samsung S21 pierde 0.25 de batería" {
+		catalina.llamarA(juliana, 1)
+		assert.equals(2.75, samsungS21.bateria())
+	}
+	
+	test "Catalina llama a Juliana por 1 minuto, el iPhone pierde 0.001 de batería" {
+		catalina.llamarA(juliana, 1)
+		assert.equals(1.999, iPhone.bateria())
+	}
+}
